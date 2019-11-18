@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class Organizer extends StatelessWidget {
+class NoteWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

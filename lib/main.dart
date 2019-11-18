@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:organizer/organizer.dart';
+import 'package:organizer/app.dart';
 
-void main() => runApp(Organizer());
+void main() => runApp(OrganizerApp());

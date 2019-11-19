@@ -6,7 +6,7 @@ import 'package:organizer/models/app_state_model.dart';
 import 'package:organizer/models/note_model.dart';
 
 import 'package:organizer/screens/add_edit_note_screen.dart';
-import 'package:organizer/screens/home_screen.dart';
+import 'package:organizer/screens/notes_screen.dart';
 
 class OrganizerApp extends StatefulWidget {
   @override
@@ -19,7 +19,7 @@ class OrganizerAppState extends State<OrganizerApp> {
   @override
   void initState() {
     super.initState();
-
+    appState.isLoading = false;
     //TODO; load from file
   }
 
@@ -29,8 +29,8 @@ class OrganizerAppState extends State<OrganizerApp> {
       title: 'Organizer',
       theme: OrganizerTheme.theme,
       routes: {
-        '/notes': (context) {
-          return HomeScreen(
+        '/': (context) {
+          return NotesScreen(
             appState: appState,
             updateNote: updateNote,
             addNote: addNote,

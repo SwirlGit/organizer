@@ -6,8 +6,8 @@ class AppState {
 
   AppState({
     this.isLoading = false,
-    this.notes = const [],
-  });
+    notes,
+  }) : this.notes = notes ?? [];
 
   factory AppState.loading() => AppState(isLoading: true);
 

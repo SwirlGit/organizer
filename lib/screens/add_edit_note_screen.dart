@@ -30,27 +30,35 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
       appBar: AppBar(title: Text(isEditing ? 'edit note' : 'add note')),
       body: Padding(
         padding: EdgeInsets.all(16.0),
-        child: ListView(
-          children: [
-            TextFormField(
-              initialValue: widget.note != null ? widget.note.name : '',
-              style: Theme.of(context).textTheme.headline,
-              decoration: InputDecoration(
-                hintText: 'Note title',
+        child: Form(
+          key: formKey,
+          autovalidate: false,
+          onWillPop: () {
+            return Future(() => true);
+          },
+          child: ListView(
+            children: [
+              TextFormField(
+                initialValue: widget.note != null ? widget.note.name : '',
+                style: Theme.of(context).textTheme.headline,
+                decoration: InputDecoration(
+                  hintText: 'Note title',
+                ),
+                validator: (val) =>
+                    val.trim().isEmpty ? 'Please enter note title' : null,
+                onSaved: (value) => _name = value,
               ),
-              validator: (val) =>
-                  val.trim().isEmpty ? 'Please enter note title' : null,
-              onSaved: (value) => _name = value,
-            ),
-            TextFormField(
-              initialValue: widget.note != null ? widget.note.text : '',
-              style: Theme.of(context).textTheme.subhead,
-              decoration: InputDecoration(
-                hintText: 'Note text',
+              TextFormField(
+                initialValue: widget.note != null ? widget.note.text : '',
+                maxLines: 10,
+                style: Theme.of(context).textTheme.subhead,
+                decoration: InputDecoration(
+                  hintText: 'Note text',
+                ),
+                onSaved: (value) => _text = value,
               ),
-              onSaved: (value) => _text = value,
-            ),
-          ],
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(

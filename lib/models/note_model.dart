@@ -1,21 +1,31 @@
 import 'package:organizer/common/uuid.dart';
 
+import 'package:organizer/models/date_information_model.dart';
+
 class Note {
   String id;
+  DateInformation dateInformation;
   String name;
   String text;
 
   Note(this.name, {this.text = '', String id})
-      : this.id = id ?? Uuid().generateV4();
+      : this.id = id ?? Uuid().generateV4() {
+    dateInformation.createdAt = DateTime.now().toUtc();
+  }
 
   Note.fromJson(Map<String, Object> json)
       : id = json["id"] as String,
         name = json["name"] as String,
-        text = json["text"] as String;
+        text = json["text"] as String {
+    dateInformation.createdAt = json["createdAt"] as DateTime;
+    dateInformation.targetDate = json["targetDate"] as DateTime;
+  }
 
   Map<String, Object> toJson() {
     return {
       "id": id,
+      "createdAt": dateInformation.createdAt,
+      "targetDate": dateInformation.targetDate,
       "name": name,
       "text": text,
     };
@@ -30,12 +40,16 @@ class Note {
       other is Note &&
           runtimeType == other.runtimeType &&
           id == other.id &&
+          dateInformation.createdAt == other.dateInformation.createdAt &&
+          dateInformation.targetDate == other.dateInformation.targetDate &&
           name == other.name &&
           text == other.text;
 
   @override
   String toString() {
-    return 'Note{id: $id, name: $name, text: $text}';
+    return 'Note{id: $id, createdAt: ${dateInformation.createdAt}, '
+        'targetDate: ${dateInformation.targetDate}, '
+        'name: $name, text: $text}';
   }
 }
 

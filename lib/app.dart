@@ -1,4 +1,8 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'package:organizer/common/theme.dart';
 
@@ -20,8 +24,11 @@ class OrganizerAppState extends State<OrganizerApp> {
   @override
   void initState() {
     super.initState();
-    appState.isLoading = false;
-    //TODO; load from file
+    _load().then((Map<String, dynamic> json) {
+      setState(() {
+        appState = AppState.fromJson(json);
+      });
+    });
   }
 
   @override
@@ -51,6 +58,30 @@ class OrganizerAppState extends State<OrganizerApp> {
     );
   }
 
+  Future<Map<String, dynamic>> _load() async {
+    try {
+      final directory = await getApplicationDocumentsDirectory();
+      final file = File('${directory.path}/app_state.txt');
+      final text = await file.readAsString();
+      final jsonState = json.decode(text);
+      return jsonState;
+    } catch (e) {
+      print("Couldn't read file");
+    }
+    return null;
+  }
+
+  void _save() async {
+    try {
+      final directory = await getApplicationDocumentsDirectory();
+      final file = File('${directory.path}/app_state.txt');
+      final text = json.encode(appState.toJson());
+      await file.writeAsString(text);
+    } catch (e) {
+      print("Couldn't save to file");
+    }
+  }
+
   void addNote(Note note) {
     setState(() {
       appState.notes.add(note);
@@ -74,5 +105,11 @@ class OrganizerAppState extends State<OrganizerApp> {
       note.name = name ?? note.name;
       note.text = text ?? note.text;
     });
+  }
+
+  @override
+  void setState(VoidCallback fn) {
+    super.setState(fn);
+    _save();
   }
 }

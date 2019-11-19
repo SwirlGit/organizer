@@ -11,6 +11,19 @@ class AppState {
 
   factory AppState.loading() => AppState(isLoading: true);
 
+  AppState.fromJson(Map<String, dynamic> json)
+      : isLoading = false,
+        notes = json["notes"] as List ?? [];
+
+  Map<String, dynamic> toJson() {
+    if (isLoading) {
+      return null;
+    }
+    return {
+      "notes": notes,
+    };
+  }
+
   @override
   int get hashCode => notes.hashCode ^ isLoading.hashCode;
 

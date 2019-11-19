@@ -8,6 +8,19 @@ class Note {
   Note(this.name, {this.text = '', String id})
       : this.id = id ?? Uuid().generateV4();
 
+  Note.fromJson(Map<String, Object> json)
+      : id = json["id"] as String,
+        name = json["name"] as String,
+        text = json["text"] as String;
+
+  Map<String, Object> toJson() {
+    return {
+      "id": id,
+      "name": name,
+      "text": text,
+    };
+  }
+
   @override
   int get hashCode => id.hashCode ^ name.hashCode ^ text.hashCode;
 
@@ -23,22 +36,6 @@ class Note {
   @override
   String toString() {
     return 'Todo{id: $id, name: $name, text: $text}';
-  }
-
-  Map<String, Object> toJson() {
-    return {
-      "id": id,
-      "name": name,
-      "text": text,
-    };
-  }
-
-  static Note fromJson(Map<String, Object> json) {
-    return Note(
-      json["name"] as String,
-      text: json["text"] as String,
-      id: json["id"] as String,
-    );
   }
 }
 

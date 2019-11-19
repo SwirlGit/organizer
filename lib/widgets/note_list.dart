@@ -5,14 +5,14 @@ import 'package:organizer/models/note_model.dart';
 import 'package:organizer/screens/actions_screen.dart';
 import 'package:organizer/screens/add_edit_note_screen.dart';
 
-class NotesWidget extends StatelessWidget {
+class NoteList extends StatelessWidget {
   final List<Note> notes;
   final bool loading;
   final NoteAdder addNote;
   final NoteRemover removeNote;
   final NoteUpdater updateNote;
 
-  NotesWidget({
+  NoteList({
     @required this.notes,
     @required this.loading,
     @required this.addNote,

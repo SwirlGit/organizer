@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:organizer/models/app_state_model.dart';
 import 'package:organizer/models/note_model.dart';
-import 'package:organizer/widgets/notes_widget.dart';
+import 'package:organizer/widgets/note_list.dart';
 
 class NotesScreen extends StatefulWidget {
   final AppState appState;
@@ -25,10 +25,8 @@ class _NotesScreenState extends State<NotesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Notes')
-      ),
-      body: NotesWidget(
+      appBar: AppBar(title: Text('Notes')),
+      body: NoteList(
         notes: widget.appState.notes,
         loading: widget.appState.isLoading,
         removeNote: widget.removeNote,

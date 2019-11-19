@@ -6,6 +6,7 @@ import 'package:organizer/models/app_state_model.dart';
 import 'package:organizer/models/note_model.dart';
 
 import 'package:organizer/screens/add_edit_note_screen.dart';
+import 'package:organizer/screens/home_screen.dart';
 import 'package:organizer/screens/notes_screen.dart';
 
 class OrganizerApp extends StatefulWidget {
@@ -28,15 +29,18 @@ class OrganizerAppState extends State<OrganizerApp> {
     return MaterialApp(
       title: 'Organizer',
       theme: OrganizerTheme.theme,
-      routes: {
-        '/': (context) {
-          return NotesScreen(
+      home: PageView(
+        children: <Widget>[
+          HomeScreen(),
+          NotesScreen(
             appState: appState,
             updateNote: updateNote,
             addNote: addNote,
             removeNote: removeNote,
-          );
-        },
+          ),
+        ],
+      ),
+      routes: {
         '/notes/addNote': (context) {
           return AddEditNoteScreen(
             addNote: addNote,

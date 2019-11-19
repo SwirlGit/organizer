@@ -11,9 +11,14 @@ class AppState {
 
   factory AppState.loading() => AppState(isLoading: true);
 
-  AppState.fromJson(Map<String, dynamic> json)
-      : isLoading = false,
-        notes = json["notes"] as List ?? [];
+  AppState.fromJson(Map<String, dynamic> json) : isLoading = false {
+    if (json != null) {
+      var rest = json["notes"] as List;
+      notes = rest.map<Note>((json) => Note.fromJson(json)).toList();
+    } else {
+      notes = [];
+    }
+  }
 
   Map<String, dynamic> toJson() {
     if (isLoading) {
@@ -37,6 +42,6 @@ class AppState {
 
   @override
   String toString() {
-    return 'AppState{isLoading: $isLoading, todos: $notes}';
+    return 'AppState{isLoading: $isLoading, notes: $notes}';
   }
 }

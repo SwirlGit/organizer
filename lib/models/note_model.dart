@@ -35,7 +35,7 @@ class Note {
 
   @override
   String toString() {
-    return 'Todo{id: $id, name: $name, text: $text}';
+    return 'Note{id: $id, name: $name, text: $text}';
   }
 }
 

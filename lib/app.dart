@@ -24,8 +24,10 @@ class OrganizerAppState extends State<OrganizerApp> {
   @override
   void initState() {
     super.initState();
-    setState(() {
-      _load();
+    _load().then((Map<String, dynamic> json) {
+      setState(() {
+        appState = AppState.fromJson(json);
+      });
     });
   }
 
@@ -56,22 +58,25 @@ class OrganizerAppState extends State<OrganizerApp> {
     );
   }
 
-  void _load() async {
+  Future<Map<String, dynamic>> _load() async {
     try {
       final directory = await getApplicationDocumentsDirectory();
       final file = File('${directory.path}/app_state.txt');
-      String text = await file.readAsString();
-      appState = AppState.fromJson(json.decode(text));
+      final text = await file.readAsString();
+      final jsonState = json.decode(text);
+      return jsonState;
     } catch (e) {
       print("Couldn't read file");
     }
+    return null;
   }
 
   void _save() async {
     try {
       final directory = await getApplicationDocumentsDirectory();
       final file = File('${directory.path}/app_state.txt');
-      await file.writeAsString(appState.toJson().toString());
+      final text = json.encode(appState.toJson());
+      await file.writeAsString(text);
     } catch (e) {
       print("Couldn't save to file");
     }

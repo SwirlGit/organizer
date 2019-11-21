@@ -8,24 +8,20 @@ class Note {
   String name;
   String text;
 
-  Note(this.name, {this.text = '', String id})
-      : this.id = id ?? Uuid().generateV4() {
-    dateInformation.createdAt = DateTime.now().toUtc();
-  }
+  Note(this.name, {this.text = '', String id, DateTime targetDate})
+      : this.id = id ?? Uuid().generateV4(),
+        this.dateInformation = DateInformation(targetDate: targetDate);
 
   Note.fromJson(Map<String, Object> json)
       : id = json["id"] as String,
+        dateInformation = DateInformation.fromJson(json["date"]),
         name = json["name"] as String,
-        text = json["text"] as String {
-    dateInformation.createdAt = json["createdAt"] as DateTime;
-    dateInformation.targetDate = json["targetDate"] as DateTime;
-  }
+        text = json["text"] as String;
 
   Map<String, Object> toJson() {
     return {
       "id": id,
-      "createdAt": dateInformation.createdAt,
-      "targetDate": dateInformation.targetDate,
+      "date": dateInformation,
       "name": name,
       "text": text,
     };
@@ -40,15 +36,13 @@ class Note {
       other is Note &&
           runtimeType == other.runtimeType &&
           id == other.id &&
-          dateInformation.createdAt == other.dateInformation.createdAt &&
-          dateInformation.targetDate == other.dateInformation.targetDate &&
+          dateInformation == other.dateInformation &&
           name == other.name &&
           text == other.text;
 
   @override
   String toString() {
-    return 'Note{id: $id, createdAt: ${dateInformation.createdAt}, '
-        'targetDate: ${dateInformation.targetDate}, '
+    return 'Note{id: $id, createdAt: date: $dateInformation, '
         'name: $name, text: $text}';
   }
 }

@@ -20,6 +20,7 @@ class AddEditNoteScreen extends StatefulWidget {
 class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
   static final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
+  DateTime _targetDate;
   String _name;
   String _text;
 
@@ -69,6 +70,7 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
             if (form.validate()) {
               form.save();
 
+              final targetDate = _targetDate;
               final name = _name;
               final text = _text;
 
@@ -77,10 +79,10 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
               } else {
                 widget.addNote(Note(
                   name,
+                  targetDate: targetDate,
                   text: text,
                 ));
               }
-
               Navigator.pop(context);
             }
           }),

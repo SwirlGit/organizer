@@ -52,6 +52,7 @@ typedef NoteRemover(Note note);
 typedef NoteUpdater(
   Note note, {
   String id,
+  DateTime targetDate,
   String name,
   String text,
 });

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:organizer/models/date_information_model.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'package:organizer/common/theme.dart';
@@ -97,11 +98,13 @@ class OrganizerAppState extends State<OrganizerApp> {
   void updateNote(
     Note note, {
     String id,
+    DateTime targetDate,
     String name,
     String text,
   }) {
     setState(() {
       note.id = id ?? note.id;
+      note.dateInformation.targetDate = targetDate ?? note.dateInformation.targetDate;
       note.name = name ?? note.name;
       note.text = text ?? note.text;
     });

@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cupertino_date_picker/flutter_cupertino_date_picker.dart';
 
@@ -25,9 +26,17 @@ const String DATETIME_FORMAT = 'yyyy-MM-dd HH:mm:ss';
 class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
   static final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
+  final TextEditingController _targetDateTimeController =
+      new TextEditingController();
   DateTime _targetDateTime;
   String _name;
   String _text;
+
+  @override
+  void initState() {
+    _targetDateTimeController.text = _currentTargetDateTimeString();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,11 +62,23 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
                     val.trim().isEmpty ? 'Please enter note title' : null,
                 onSaved: (value) => _name = value,
               ),
-              FlatButton(
-                onPressed: () {
+              TextFormField(
+                controller: _targetDateTimeController,
+                style: Theme.of(context).textTheme.headline,
+                decoration: InputDecoration(
+                  hintText: 'Target date',
+                ),
+                validator: (val) {
+                  try {
+                    DateTime.parse(val);
+                    return null;
+                  } catch (e) {
+                    return 'Please choose target date time';
+                  }
+                },
+                onTap: () {
                   _showDateTimePicker();
                 },
-                child: Text(_currentTargetDateTimeString()),
               ),
               TextFormField(
                 initialValue: widget.note != null ? widget.note.text : '',
@@ -85,7 +106,8 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
               final text = _text;
 
               if (isEditing) {
-                widget.updateNote(widget.note, name: name, text: text);
+                widget.updateNote(widget.note,
+                    name: name, targetDate: targetDateTime, text: text);
               } else {
                 widget.addNote(Note(
                   name,
@@ -104,34 +126,25 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
       context,
       minDateTime: DateTime.parse(MIN_DATETIME),
       maxDateTime: DateTime.parse(MAX_DATETIME),
-      //initialDateTime: DateTime.parse(INIT_DATETIME),
       dateFormat: DATETIME_FORMAT,
-      //locale: _locale,
       pickerMode: DateTimePickerMode.datetime, // show DateTimePicker
       onConfirm: (dateTime, List<int> index) {
         setState(() {
           _targetDateTime = dateTime;
+          _targetDateTimeController.text = _currentTargetDateTimeString();
         });
       },
     );
   }
 
   String _currentTargetDateTimeString() {
-    String resultString;
-    if (widget.note == null) {
-      if (_targetDateTime == null) {
-        resultString = 'target date time';
-      } else {
-        resultString = _targetDateTime.toLocal().toString();
-      }
-    } else {
-      if (_targetDateTime == null) {
-        resultString = widget.note.dateInformation.targetDate.toLocal().toString();
-      } else {
-        resultString = _targetDateTime.toLocal().toString();
-      }
+    if (_targetDateTime != null) {
+      return DateFormat(DATETIME_FORMAT).format(_targetDateTime.toLocal());
+    } else if (widget.note != null) {
+      return DateFormat(DATETIME_FORMAT)
+          .format(widget.note.dateInformation.targetDate.toLocal());
     }
-    return resultString;
+    return '';
   }
 
   bool get isEditing => widget.note != null;

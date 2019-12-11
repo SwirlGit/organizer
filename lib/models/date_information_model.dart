@@ -9,13 +9,13 @@ class DateInformation {
   }
 
   DateInformation.fromJson(Map<String, Object> json)
-      : _createdAt = json["createdAt"] as DateTime,
-        targetDate = json["targetDate"] as DateTime;
+      : _createdAt = DateTime.parse(json["createdAt"] as String).toUtc(),
+        targetDate = DateTime.parse(json["targetDate"] as String).toUtc();
 
   Map<String, Object> toJson() {
     return {
-      "createdAt": createdAt,
-      "targetDate": targetDate,
+      "createdAt": createdAt.toIso8601String(),
+      "targetDate": targetDate.toIso8601String(),
     };
   }
 

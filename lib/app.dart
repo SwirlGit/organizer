@@ -2,13 +2,15 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:organizer/models/date_information_model.dart';
+import 'package:organizer/screens/add_edit_todo_screen.dart';
+import 'package:organizer/screens/todos_screen.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'package:organizer/common/theme.dart';
 
 import 'package:organizer/models/app_state_model.dart';
 import 'package:organizer/models/note_model.dart';
+import 'package:organizer/models/todo_model.dart';
 
 import 'package:organizer/screens/add_edit_note_screen.dart';
 import 'package:organizer/screens/home_screen.dart';
@@ -40,6 +42,12 @@ class OrganizerAppState extends State<OrganizerApp> {
       home: PageView(
         children: <Widget>[
           HomeScreen(),
+          TodosScreen(
+            appState: appState,
+            updateTodo: updateTodo,
+            addTodo: addTodo,
+            removeTodo: removeTodo,
+          ),
           NotesScreen(
             appState: appState,
             updateNote: updateNote,
@@ -53,6 +61,12 @@ class OrganizerAppState extends State<OrganizerApp> {
           return AddEditNoteScreen(
             addNote: addNote,
             updateNote: updateNote,
+          );
+        },
+        '/todos/addTodo': (context) {
+          return AddEditTodoScreen(
+            addTodo: addTodo,
+            updateTodo: updateTodo,
           );
         },
       },
@@ -104,9 +118,38 @@ class OrganizerAppState extends State<OrganizerApp> {
   }) {
     setState(() {
       note.id = id ?? note.id;
-      note.dateInformation.targetDate = targetDate ?? note.dateInformation.targetDate;
+      note.dateInformation.targetDate =
+          targetDate ?? note.dateInformation.targetDate;
       note.name = name ?? note.name;
       note.text = text ?? note.text;
+    });
+  }
+
+  void addTodo(Todo todo) {
+    setState(() {
+      appState.todos.add(todo);
+    });
+  }
+
+  void removeTodo(Todo todo) {
+    setState(() {
+      appState.todos.remove(todo);
+    });
+  }
+
+  void updateTodo(
+    Todo todo, {
+    String id,
+    DateTime targetDate,
+    String name,
+    String text,
+  }) {
+    setState(() {
+      todo.id = id ?? todo.id;
+      todo.dateInformation.targetDate =
+          targetDate ?? todo.dateInformation.targetDate;
+      todo.name = name ?? todo.name;
+      todo.text = text ?? todo.text;
     });
   }
 

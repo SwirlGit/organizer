@@ -7,11 +7,18 @@ class Task {
   DateInformation dateInformation;
   String name;
   String text;
-  bool done;
+  Task parentTask;
+  List<Task> subTasks;
+  bool _done = false;
 
   Task(this.name,
-      {this.text = '', this.done = false, String id, DateTime targetDate})
+      {this.text = '',
+      this.parentTask,
+      String id,
+      List<Task> subTasks,
+      DateTime targetDate})
       : this.id = id ?? Uuid().generateV4(),
+        this.subTasks = subTasks ?? [],
         this.dateInformation = DateInformation(targetDate: targetDate);
 
   Task.fromJson(Map<String, Object> json)
@@ -19,7 +26,18 @@ class Task {
         dateInformation = DateInformation.fromJson(json["date"]),
         name = json["name"] as String,
         text = json["text"] as String,
-        done = json["done"] as bool;
+        _done = json["done"] as bool {
+    if (json["parentTask"] != null) {
+      parentTask = Task.fromJson(json["parentTask"]);
+    }
+    subTasks = [];
+    if (json != null) {
+      var tasksRest = json["subTasks"] as List;
+      if (tasksRest != null) {
+        subTasks = tasksRest.map<Task>((json) => Task.fromJson(json)).toList();
+      }
+    }
+  }
 
   Map<String, Object> toJson() {
     return {
@@ -27,13 +45,38 @@ class Task {
       "date": dateInformation,
       "name": name,
       "text": text,
-      "done": done,
+      "parentTask": parentTask,
+      "subTasks": subTasks,
+      "done": _done,
     };
   }
 
+  double donePercentage() {
+    if (subTasks.length == 0) {
+      return _done ? 100.0 : 0.0;
+    }
+    double donePercentage = 0.0;
+    for (Task task in subTasks) {
+      donePercentage += task.donePercentage();
+    }
+    return donePercentage / subTasks.length;
+  }
+
+  bool canBeMarkedAsDone() {
+    return subTasks.length == 0;
+  }
+
+  bool get done => _done;
+  set done(bool done) => this._done = canBeMarkedAsDone() ? done : this._done;
+
   @override
   int get hashCode =>
-      id.hashCode ^ name.hashCode ^ text.hashCode ^ done.hashCode;
+      id.hashCode ^
+      name.hashCode ^
+      text.hashCode ^
+      parentTask.hashCode ^
+      subTasks.hashCode ^
+      _done.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -44,12 +87,15 @@ class Task {
           dateInformation == other.dateInformation &&
           name == other.name &&
           text == other.text &&
-          done == other.done;
+          parentTask == other.parentTask &&
+          subTasks == other.subTasks &&
+          _done == other._done;
 
   @override
   String toString() {
     return 'Task{id: $id, createdAt: date: $dateInformation, '
-        'name: $name, text: $text, done: $done}';
+        'name: $name, text: $text, parentTask: $parentTask, '
+        'subTasks: $subTasks, done: $_done}';
   }
 }
 
@@ -61,5 +107,7 @@ typedef TaskUpdater(
   DateTime targetDate,
   String name,
   String text,
+  Task parentTask,
+  List<Task> subTasks,
   bool done,
 });

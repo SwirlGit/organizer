@@ -143,6 +143,8 @@ class OrganizerAppState extends State<OrganizerApp> {
     DateTime targetDate,
     String name,
     String text,
+    Task parentTask,
+    List<Task> subTasks,
     bool done,
   }) {
     setState(() {
@@ -151,6 +153,8 @@ class OrganizerAppState extends State<OrganizerApp> {
           targetDate ?? task.dateInformation.targetDate;
       task.name = name ?? task.name;
       task.text = text ?? task.text;
+      task.parentTask = parentTask ?? parentTask;
+      task.subTasks = subTasks ?? subTasks;
       task.done = done ?? task.done;
     });
   }

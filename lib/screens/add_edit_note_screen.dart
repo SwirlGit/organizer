@@ -34,6 +34,8 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
 
   @override
   void initState() {
+    _targetDateTime =
+        widget.note != null ? widget.note.dateInformation.targetDate : null;
     _targetDateTimeController.text = _currentTargetDateTimeString();
     super.initState();
   }
@@ -140,9 +142,6 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
   String _currentTargetDateTimeString() {
     if (_targetDateTime != null) {
       return DateFormat(DATETIME_FORMAT).format(_targetDateTime.toLocal());
-    } else if (widget.note != null) {
-      return DateFormat(DATETIME_FORMAT)
-          .format(widget.note.dateInformation.targetDate.toLocal());
     }
     return '';
   }

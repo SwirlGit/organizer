@@ -27,13 +27,15 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
   static final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   final TextEditingController _targetDateTimeController =
-  new TextEditingController();
+      new TextEditingController();
   DateTime _targetDateTime;
   String _name;
   String _text;
 
   @override
   void initState() {
+    _targetDateTime =
+        widget.task != null ? widget.task.dateInformation.targetDate : null;
     _targetDateTimeController.text = _currentTargetDateTimeString();
     super.initState();
   }
@@ -59,7 +61,7 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
                   hintText: 'Task title',
                 ),
                 validator: (val) =>
-                val.trim().isEmpty ? 'Please enter task title' : null,
+                    val.trim().isEmpty ? 'Please enter task title' : null,
                 onSaved: (value) => _name = value,
               ),
               TextFormField(
@@ -141,9 +143,6 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
   String _currentTargetDateTimeString() {
     if (_targetDateTime != null) {
       return DateFormat(DATETIME_FORMAT).format(_targetDateTime.toLocal());
-    } else if (widget.task != null) {
-      return DateFormat(DATETIME_FORMAT)
-          .format(widget.task.dateInformation.targetDate.toLocal());
     }
     return '';
   }

@@ -113,6 +113,7 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
                   name,
                   targetDate: targetDateTime,
                   text: text,
+                  done: false,
                 ));
               }
               Navigator.pop(context);

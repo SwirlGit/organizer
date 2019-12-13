@@ -7,8 +7,10 @@ class Task {
   DateInformation dateInformation;
   String name;
   String text;
+  bool done;
 
-  Task(this.name, {this.text = '', String id, DateTime targetDate})
+  Task(this.name,
+      {this.text = '', this.done = false, String id, DateTime targetDate})
       : this.id = id ?? Uuid().generateV4(),
         this.dateInformation = DateInformation(targetDate: targetDate);
 
@@ -16,7 +18,8 @@ class Task {
       : id = json["id"] as String,
         dateInformation = DateInformation.fromJson(json["date"]),
         name = json["name"] as String,
-        text = json["text"] as String;
+        text = json["text"] as String,
+        done = json["done"] as bool;
 
   Map<String, Object> toJson() {
     return {
@@ -24,35 +27,39 @@ class Task {
       "date": dateInformation,
       "name": name,
       "text": text,
+      "done": done,
     };
   }
 
   @override
-  int get hashCode => id.hashCode ^ name.hashCode ^ text.hashCode;
+  int get hashCode =>
+      id.hashCode ^ name.hashCode ^ text.hashCode ^ done.hashCode;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is Task &&
-              runtimeType == other.runtimeType &&
-              id == other.id &&
-              dateInformation == other.dateInformation &&
-              name == other.name &&
-              text == other.text;
+      other is Task &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          dateInformation == other.dateInformation &&
+          name == other.name &&
+          text == other.text &&
+          done == other.done;
 
   @override
   String toString() {
     return 'Task{id: $id, createdAt: date: $dateInformation, '
-        'name: $name, text: $text}';
+        'name: $name, text: $text, done: $done}';
   }
 }
 
 typedef TaskAdder(Task task);
 typedef TaskRemover(Task task);
 typedef TaskUpdater(
-    Task task, {
-      String id,
-      DateTime targetDate,
-      String name,
-      String text,
-    });
+  Task task, {
+  String id,
+  DateTime targetDate,
+  String name,
+  String text,
+  bool done,
+});

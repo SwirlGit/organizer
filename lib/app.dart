@@ -143,6 +143,7 @@ class OrganizerAppState extends State<OrganizerApp> {
     DateTime targetDate,
     String name,
     String text,
+    bool done,
   }) {
     setState(() {
       task.id = id ?? task.id;
@@ -150,6 +151,7 @@ class OrganizerAppState extends State<OrganizerApp> {
           targetDate ?? task.dateInformation.targetDate;
       task.name = name ?? task.name;
       task.text = text ?? task.text;
+      task.done = done ?? task.done;
     });
   }
 

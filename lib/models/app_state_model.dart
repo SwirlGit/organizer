@@ -1,27 +1,27 @@
 import 'package:organizer/models/note_model.dart';
-import 'package:organizer/models/todo_model.dart';
+import 'package:organizer/models/task_model.dart';
 
 class AppState {
   bool isLoading;
-  List<Todo> todos;
+  List<Task> tasks;
   List<Note> notes;
 
   AppState({
     this.isLoading = false,
-    todos,
+    tasks,
     notes,
-  })  : this.todos = todos ?? [],
+  })  : this.tasks = tasks ?? [],
         this.notes = notes ?? [];
 
   factory AppState.loading() => AppState(isLoading: true);
 
   AppState.fromJson(Map<String, dynamic> json) : isLoading = false {
-    todos = [];
+    tasks = [];
     notes = [];
     if (json != null) {
-      var todosRest = json["todos"] as List;
-      if (todosRest != null) {
-        todos = todosRest.map<Todo>((json) => Todo.fromJson(json)).toList();
+      var tasksRest = json["tasks"] as List;
+      if (tasksRest != null) {
+        tasks = tasksRest.map<Task>((json) => Task.fromJson(json)).toList();
       }
       var notesRest = json["notes"] as List;
       if (notesRest != null) {
@@ -35,25 +35,25 @@ class AppState {
       return null;
     }
     return {
-      "todos": todos,
+      "tasks": tasks,
       "notes": notes,
     };
   }
 
   @override
-  int get hashCode => todos.hashCode ^ notes.hashCode ^ isLoading.hashCode;
+  int get hashCode => tasks.hashCode ^ notes.hashCode ^ isLoading.hashCode;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is AppState &&
           runtimeType == other.runtimeType &&
-          todos == other.todos &&
+          tasks == other.tasks &&
           notes == other.notes &&
           isLoading == other.isLoading;
 
   @override
   String toString() {
-    return 'AppState{isLoading: $isLoading, todos: $todos, notes: $notes}';
+    return 'AppState{isLoading: $isLoading, tasks: $tasks, notes: $notes}';
   }
 }

@@ -2,28 +2,28 @@ import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cupertino_date_picker/flutter_cupertino_date_picker.dart';
 
-import 'package:organizer/models/todo_model.dart';
+import 'package:organizer/models/task_model.dart';
 
-class AddEditTodoScreen extends StatefulWidget {
-  final Todo todo;
-  final TodoAdder addTodo;
-  final TodoUpdater updateTodo;
+class AddEditTaskScreen extends StatefulWidget {
+  final Task task;
+  final TaskAdder addTask;
+  final TaskUpdater updateTask;
 
-  AddEditTodoScreen({
-    @required this.addTodo,
-    @required this.updateTodo,
-    this.todo,
+  AddEditTaskScreen({
+    @required this.addTask,
+    @required this.updateTask,
+    this.task,
   });
 
   @override
-  _AddEditTodoScreenState createState() => _AddEditTodoScreenState();
+  _AddEditTaskScreenState createState() => _AddEditTaskScreenState();
 }
 
 const String MIN_DATETIME = '2019-01-01 00:00:00';
 const String MAX_DATETIME = '2100-12-31 23:59:59';
 const String DATETIME_FORMAT = 'yyyy-MM-dd HH:mm:ss';
 
-class _AddEditTodoScreenState extends State<AddEditTodoScreen> {
+class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
   static final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   final TextEditingController _targetDateTimeController =
@@ -41,7 +41,7 @@ class _AddEditTodoScreenState extends State<AddEditTodoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(isEditing ? 'edit todo' : 'add todo')),
+      appBar: AppBar(title: Text(isEditing ? 'edit task' : 'add task')),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Form(
@@ -53,13 +53,13 @@ class _AddEditTodoScreenState extends State<AddEditTodoScreen> {
           child: ListView(
             children: [
               TextFormField(
-                initialValue: widget.todo != null ? widget.todo.name : '',
+                initialValue: widget.task != null ? widget.task.name : '',
                 style: Theme.of(context).textTheme.headline,
                 decoration: InputDecoration(
-                  hintText: 'Todo title',
+                  hintText: 'Task title',
                 ),
                 validator: (val) =>
-                val.trim().isEmpty ? 'Please enter todo title' : null,
+                val.trim().isEmpty ? 'Please enter task title' : null,
                 onSaved: (value) => _name = value,
               ),
               TextFormField(
@@ -81,11 +81,11 @@ class _AddEditTodoScreenState extends State<AddEditTodoScreen> {
                 },
               ),
               TextFormField(
-                initialValue: widget.todo != null ? widget.todo.text : '',
+                initialValue: widget.task != null ? widget.task.text : '',
                 maxLines: 10,
                 style: Theme.of(context).textTheme.subhead,
                 decoration: InputDecoration(
-                  hintText: 'Todo text',
+                  hintText: 'Task text',
                 ),
                 onSaved: (value) => _text = value,
               ),
@@ -94,7 +94,7 @@ class _AddEditTodoScreenState extends State<AddEditTodoScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-          tooltip: isEditing ? 'Save changes' : 'Add todo',
+          tooltip: isEditing ? 'Save changes' : 'Add task',
           child: Icon(isEditing ? Icons.check : Icons.add),
           onPressed: () {
             final form = formKey.currentState;
@@ -106,10 +106,10 @@ class _AddEditTodoScreenState extends State<AddEditTodoScreen> {
               final text = _text;
 
               if (isEditing) {
-                widget.updateTodo(widget.todo,
+                widget.updateTask(widget.task,
                     name: name, targetDate: targetDateTime, text: text);
               } else {
-                widget.addTodo(Todo(
+                widget.addTask(Task(
                   name,
                   targetDate: targetDateTime,
                   text: text,
@@ -140,12 +140,12 @@ class _AddEditTodoScreenState extends State<AddEditTodoScreen> {
   String _currentTargetDateTimeString() {
     if (_targetDateTime != null) {
       return DateFormat(DATETIME_FORMAT).format(_targetDateTime.toLocal());
-    } else if (widget.todo != null) {
+    } else if (widget.task != null) {
       return DateFormat(DATETIME_FORMAT)
-          .format(widget.todo.dateInformation.targetDate.toLocal());
+          .format(widget.task.dateInformation.targetDate.toLocal());
     }
     return '';
   }
 
-  bool get isEditing => widget.todo != null;
+  bool get isEditing => widget.task != null;
 }

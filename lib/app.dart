@@ -2,15 +2,15 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:organizer/screens/add_edit_todo_screen.dart';
-import 'package:organizer/screens/todos_screen.dart';
+import 'package:organizer/screens/add_edit_task_screen.dart';
+import 'package:organizer/screens/tasks_screen.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'package:organizer/common/theme.dart';
 
 import 'package:organizer/models/app_state_model.dart';
 import 'package:organizer/models/note_model.dart';
-import 'package:organizer/models/todo_model.dart';
+import 'package:organizer/models/task_model.dart';
 
 import 'package:organizer/screens/add_edit_note_screen.dart';
 import 'package:organizer/screens/home_screen.dart';
@@ -42,11 +42,11 @@ class OrganizerAppState extends State<OrganizerApp> {
       home: PageView(
         children: <Widget>[
           HomeScreen(),
-          TodosScreen(
+          TasksScreen(
             appState: appState,
-            updateTodo: updateTodo,
-            addTodo: addTodo,
-            removeTodo: removeTodo,
+            updateTask: updateTask,
+            addTask: addTask,
+            removeTask: removeTask,
           ),
           NotesScreen(
             appState: appState,
@@ -63,10 +63,10 @@ class OrganizerAppState extends State<OrganizerApp> {
             updateNote: updateNote,
           );
         },
-        '/todos/addTodo': (context) {
-          return AddEditTodoScreen(
-            addTodo: addTodo,
-            updateTodo: updateTodo,
+        '/tasks/addTask': (context) {
+          return AddEditTaskScreen(
+            addTask: addTask,
+            updateTask: updateTask,
           );
         },
       },
@@ -125,31 +125,31 @@ class OrganizerAppState extends State<OrganizerApp> {
     });
   }
 
-  void addTodo(Todo todo) {
+  void addTask(Task task) {
     setState(() {
-      appState.todos.add(todo);
+      appState.tasks.add(task);
     });
   }
 
-  void removeTodo(Todo todo) {
+  void removeTask(Task task) {
     setState(() {
-      appState.todos.remove(todo);
+      appState.tasks.remove(task);
     });
   }
 
-  void updateTodo(
-    Todo todo, {
+  void updateTask(
+    Task task, {
     String id,
     DateTime targetDate,
     String name,
     String text,
   }) {
     setState(() {
-      todo.id = id ?? todo.id;
-      todo.dateInformation.targetDate =
-          targetDate ?? todo.dateInformation.targetDate;
-      todo.name = name ?? todo.name;
-      todo.text = text ?? todo.text;
+      task.id = id ?? task.id;
+      task.dateInformation.targetDate =
+          targetDate ?? task.dateInformation.targetDate;
+      task.name = name ?? task.name;
+      task.text = text ?? task.text;
     });
   }
 

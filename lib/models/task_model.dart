@@ -2,17 +2,17 @@ import 'package:organizer/common/uuid.dart';
 
 import 'package:organizer/models/date_information_model.dart';
 
-class Todo {
+class Task {
   String id;
   DateInformation dateInformation;
   String name;
   String text;
 
-  Todo(this.name, {this.text = '', String id, DateTime targetDate})
+  Task(this.name, {this.text = '', String id, DateTime targetDate})
       : this.id = id ?? Uuid().generateV4(),
         this.dateInformation = DateInformation(targetDate: targetDate);
 
-  Todo.fromJson(Map<String, Object> json)
+  Task.fromJson(Map<String, Object> json)
       : id = json["id"] as String,
         dateInformation = DateInformation.fromJson(json["date"]),
         name = json["name"] as String,
@@ -33,7 +33,7 @@ class Todo {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is Todo &&
+          other is Task &&
               runtimeType == other.runtimeType &&
               id == other.id &&
               dateInformation == other.dateInformation &&
@@ -42,15 +42,15 @@ class Todo {
 
   @override
   String toString() {
-    return 'Todo{id: $id, createdAt: date: $dateInformation, '
+    return 'Task{id: $id, createdAt: date: $dateInformation, '
         'name: $name, text: $text}';
   }
 }
 
-typedef TodoAdder(Todo todo);
-typedef TodoRemover(Todo todo);
-typedef TodoUpdater(
-    Todo todo, {
+typedef TaskAdder(Task task);
+typedef TaskRemover(Task task);
+typedef TaskUpdater(
+    Task task, {
       String id,
       DateTime targetDate,
       String name,

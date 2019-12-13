@@ -36,6 +36,7 @@ class TaskList extends StatelessWidget {
             onDismissed: (direction) {
               removeTask(task);
             },
+            onDoneTap: () => updateTask(task, done: !task.done),
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(

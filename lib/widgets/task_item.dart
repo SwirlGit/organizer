@@ -5,11 +5,13 @@ import 'package:organizer/models/task_model.dart';
 class TaskItem extends StatelessWidget {
   final DismissDirectionCallback onDismissed;
   final GestureTapCallback onTap;
+  final GestureTapCallback onDoneTap;
   final Task task;
 
   TaskItem({
     @required this.onDismissed,
     @required this.onTap,
+    @required this.onDoneTap,
     @required this.task,
   });
 
@@ -23,6 +25,13 @@ class TaskItem extends StatelessWidget {
         title: Text(
           task.name,
           style: Theme.of(context).textTheme.title,
+        ),
+        trailing: IconButton(
+          icon: Icon(
+            Icons.check,
+            color: task.done ? Colors.green : Colors.grey,
+          ),
+          onPressed: onDoneTap,
         ),
         subtitle: Text(
           task.text,

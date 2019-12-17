@@ -18,7 +18,7 @@ class TaskItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dismissible(
-      key: Key('NoteItem__${task.id}'),
+      key: Key('TaskItem__${task.id}'),
       onDismissed: onDismissed,
       child: ListTile(
         onTap: onTap,

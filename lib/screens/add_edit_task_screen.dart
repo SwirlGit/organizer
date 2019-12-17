@@ -129,7 +129,7 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
       minDateTime: DateTime.parse(MIN_DATETIME),
       maxDateTime: DateTime.parse(MAX_DATETIME),
       dateFormat: DATETIME_FORMAT,
-      pickerMode: DateTimePickerMode.datetime, // show DateTimePicker
+      pickerMode: DateTimePickerMode.datetime,
       onConfirm: (dateTime, List<int> index) {
         setState(() {
           _targetDateTime = dateTime;

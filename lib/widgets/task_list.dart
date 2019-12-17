@@ -24,33 +24,31 @@ class TaskList extends StatelessWidget {
     return Container(
       child: loading
           ? Center(
-        child: CircularProgressIndicator(),
-      )
+              child: CircularProgressIndicator(),
+            )
           : ListView.builder(
-        itemCount: tasks.length,
-        itemBuilder: (BuildContext context, int index) {
-          final task = tasks[index];
+              itemCount: tasks.length,
+              itemBuilder: (BuildContext context, int index) {
+                final task = tasks[index];
 
-          return TaskItem(
-            task: task,
-            onDismissed: (direction) {
-              removeTask(task);
-            },
-            onDoneTap: () => updateTask(task, done: !task.done),
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => AddEditTaskScreen(
-                    addTask: addTask,
-                    updateTask: updateTask,
-                    task: task,
-                  ),
-                ),
-              );
-            },
-          );
-        },
-      ),
+                return TaskItem(
+                  task: task,
+                  onDeleteTap: () => removeTask(task),
+                  onDoneTap: () => updateTask(task, done: !task.done),
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => AddEditTaskScreen(
+                          addTask: addTask,
+                          updateTask: updateTask,
+                          task: task,
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
     );
   }
 }

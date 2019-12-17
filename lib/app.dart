@@ -153,8 +153,8 @@ class OrganizerAppState extends State<OrganizerApp> {
           targetDate ?? task.dateInformation.targetDate;
       task.name = name ?? task.name;
       task.text = text ?? task.text;
-      task.parentTask = parentTask ?? parentTask;
-      task.subTasks = subTasks ?? subTasks;
+      task.parentTask = parentTask ?? task.parentTask;
+      task.subTasks = subTasks ?? task.subTasks;
       task.done = done ?? task.done;
     });
   }

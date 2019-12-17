@@ -4,13 +4,18 @@ import 'package:flutter_cupertino_date_picker/flutter_cupertino_date_picker.dart
 
 import 'package:organizer/models/task_model.dart';
 
+import 'package:organizer/widgets/task_item.dart';
+import 'package:organizer/widgets/task_list_adder.dart';
+
 class AddEditTaskScreen extends StatefulWidget {
   final Task task;
   final TaskAdder addTask;
+  final TaskRemover removeTask;
   final TaskUpdater updateTask;
 
   AddEditTaskScreen({
     @required this.addTask,
+    @required this.removeTask,
     @required this.updateTask,
     this.task,
   });
@@ -90,6 +95,17 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
                   hintText: 'Task text',
                 ),
                 onSaved: (value) => _text = value,
+              ),
+              TaskListAdder(
+                maxItems: 1,
+                title: 'Parent task',
+                tasks: widget.task == null || widget.task.parentTask == null
+                    ? []
+                    : [widget.task.parentTask],
+                loading: false,
+                addTask: widget.addTask,
+                removeTask: widget.removeTask,
+                updateTask: widget.updateTask,
               ),
             ],
           ),

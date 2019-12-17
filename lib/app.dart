@@ -66,6 +66,7 @@ class OrganizerAppState extends State<OrganizerApp> {
         '/tasks/addTask': (context) {
           return AddEditTaskScreen(
             addTask: addTask,
+            removeTask: removeTask,
             updateTask: updateTask,
           );
         },

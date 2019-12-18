@@ -92,10 +92,16 @@ class Task {
   }
 
   bool canBeParentTaskTo(Task task) {
+    if (this == task) {
+      return false;
+    }
     return !hasParentTask(task);
   }
 
   bool canBeSubTaskTo(Task task) {
+    if (this == task) {
+      return false;
+    }
     return !hasSubTask(task);
   }
 

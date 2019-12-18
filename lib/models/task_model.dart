@@ -69,6 +69,36 @@ class Task {
   bool get done => _done;
   set done(bool done) => this._done = canBeMarkedAsDone() ? done : this._done;
 
+  bool hasParentTask(Task task) {
+    if (parentTask == null) {
+      return false;
+    }
+    if (parentTask == task) {
+      return true;
+    }
+    return parentTask.hasParentTask(task);
+  }
+
+  bool hasSubTask(Task task) {
+    for (Task subTask in subTasks) {
+      if (subTask == task) {
+        return true;
+      }
+      if (subTask.hasSubTask(task)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  bool canBeParentTaskTo(Task task) {
+    return !hasParentTask(task);
+  }
+
+  bool canBeSubTaskTo(Task task) {
+    return !hasSubTask(task);
+  }
+
   @override
   int get hashCode =>
       id.hashCode ^

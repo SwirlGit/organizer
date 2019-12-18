@@ -34,7 +34,7 @@ class TaskListAdder extends StatelessWidget {
           Row(
             children: <Widget>[
               Text(title),
-              (tasks.length >= maxItems)
+              ((maxItems >= 0) && (tasks.length >= maxItems))
                   ? Container()
                   : IconButton(
                       icon: Icon(Icons.add, color: Colors.white),

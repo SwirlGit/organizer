@@ -107,6 +107,17 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
                 removeTask: widget.removeTask,
                 updateTask: widget.updateTask,
               ),
+              TaskListAdder(
+                maxItems: -1,
+                title: 'Sub tasks',
+                tasks: widget.task == null || widget.task.subTasks == null
+                    ? []
+                    : widget.task.subTasks,
+                loading: false,
+                addTask: widget.addTask,
+                removeTask: widget.removeTask,
+                updateTask: widget.updateTask,
+              ),
             ],
           ),
         ),

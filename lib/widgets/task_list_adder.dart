@@ -25,28 +25,48 @@ class TaskListAdder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: tasks.length,
-      itemBuilder: (BuildContext context, int index) {
-        final task = tasks[index];
-        return TaskItem(
-          task: task,
-          onDeleteTap: () => removeTask(task),
-          onDoneTap: () => updateTask(task, done: !task.done),
-          onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => AddEditTaskScreen(
-                  addTask: addTask,
-                  updateTask: updateTask,
-                  task: task,
-                ),
-              ),
-            );
-          },
-        );
-      },
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+      ),
+      child: Stack(
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Text(title),
+              (tasks.length >= maxItems)
+                  ? Container()
+                  : IconButton(
+                      icon: Icon(Icons.add, color: Colors.white),
+                      onPressed: () => {},
+                    ),
+            ],
+          ),
+          ListView.builder(
+            shrinkWrap: true,
+            itemCount: tasks.length,
+            itemBuilder: (BuildContext context, int index) {
+              final task = tasks[index];
+              return TaskItem(
+                task: task,
+                onDeleteTap: () => removeTask(task),
+                onDoneTap: () => updateTask(task, done: !task.done),
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => AddEditTaskScreen(
+                        addTask: addTask,
+                        updateTask: updateTask,
+                        task: task,
+                      ),
+                    ),
+                  );
+                },
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 }

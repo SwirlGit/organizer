@@ -2,20 +2,20 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
+
+import 'package:organizer/screens/add_edit_note_screen.dart';
 import 'package:organizer/screens/add_edit_task_screen.dart';
 import 'package:organizer/screens/choose_task_screen.dart';
+import 'package:organizer/screens/home_screen.dart';
+import 'package:organizer/screens/notes_screen.dart';
 import 'package:organizer/screens/tasks_screen.dart';
-import 'package:path_provider/path_provider.dart';
 
 import 'package:organizer/common/theme.dart';
 
 import 'package:organizer/models/app_state_model.dart';
 import 'package:organizer/models/note_model.dart';
 import 'package:organizer/models/task_model.dart';
-
-import 'package:organizer/screens/add_edit_note_screen.dart';
-import 'package:organizer/screens/home_screen.dart';
-import 'package:organizer/screens/notes_screen.dart';
 
 class OrganizerApp extends StatefulWidget {
   @override

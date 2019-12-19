@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:organizer/screens/add_edit_task_screen.dart';
+import 'package:organizer/screens/choose_task_screen.dart';
 import 'package:organizer/screens/tasks_screen.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -68,6 +69,11 @@ class OrganizerAppState extends State<OrganizerApp> {
             addTask: addTask,
             removeTask: removeTask,
             updateTask: updateTask,
+          );
+        },
+        '/tasks/chooseTask': (context) {
+          return ChooseTaskScreen(
+            tasks: [],
           );
         },
       },

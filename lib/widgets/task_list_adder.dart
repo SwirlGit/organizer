@@ -38,7 +38,9 @@ class TaskListAdder extends StatelessWidget {
                   ? Container()
                   : IconButton(
                       icon: Icon(Icons.add, color: Colors.white),
-                      onPressed: () => {},
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/tasks/chooseTask');
+                      },
                     ),
             ],
           ),

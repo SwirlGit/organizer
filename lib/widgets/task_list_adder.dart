@@ -49,7 +49,8 @@ class TaskListAdder extends StatelessWidget {
               final task = tasks[index];
               return TaskItem(
                 task: task,
-                onDeleteTap: onDeleteTap == null ? null : () => onDeleteTap(task),
+                onDeleteTap:
+                    onDeleteTap == null ? null : () => onDeleteTap(task),
                 onDoneTap: onDoneTap == null ? null : () => onDoneTap(task),
                 onTap: () => onTap(task),
               );

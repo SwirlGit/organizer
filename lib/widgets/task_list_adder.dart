@@ -1,28 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:organizer/models/app_state_model.dart';
-import 'package:organizer/screens/choose_task_screen.dart';
+
+import 'package:organizer/models/task_model.dart';
 
 import 'package:organizer/widgets/task_item.dart';
-import 'package:organizer/models/task_model.dart';
-import 'package:organizer/screens/add_edit_task_screen.dart';
 
 class TaskListAdder extends StatelessWidget {
   final int maxItems;
   final String title;
   final List<Task> tasks;
-  final TaskAdder addTask;
-  final TaskRemover removeTask;
-  final TaskUpdater updateTask;
+  final Function(Task task) onTap;
+  final Function(Task task) onDoneTap;
+  final Function(Task task) onDeleteTap;
   final GestureTapCallback onAddTap;
 
   TaskListAdder({
     @required this.maxItems,
     @required this.title,
     @required this.tasks,
-    @required this.addTask,
-    @required this.removeTask,
-    @required this.updateTask,
+    @required this.onTap,
     @required this.onAddTap,
+    this.onDoneTap,
+    this.onDeleteTap,
   });
 
   @override
@@ -51,19 +49,9 @@ class TaskListAdder extends StatelessWidget {
               final task = tasks[index];
               return TaskItem(
                 task: task,
-                onDeleteTap: () => removeTask(task),
-                onDoneTap: () => updateTask(task, done: !task.done),
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => AddEditTaskScreen(
-                        addTask: addTask,
-                        updateTask: updateTask,
-                        task: task,
-                      ),
-                    ),
-                  );
-                },
+                onDeleteTap: onDeleteTap == null ? null : () => onDeleteTap(task),
+                onDoneTap: onDoneTap == null ? null : () => onDoneTap(task),
+                onTap: () => onTap(task),
               );
             },
           ),

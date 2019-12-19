@@ -111,9 +111,14 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
                 maxItems: 1,
                 title: 'Parent task',
                 tasks: _parentTask != null ? [_parentTask] : [],
-                addTask: widget.addTask,
-                removeTask: widget.removeTask,
-                updateTask: widget.updateTask,
+                onTap: (Task task) {
+
+                },
+                onDeleteTap: (Task task) {
+                  setState(() {
+                    _parentTask = null;
+                  });
+                },
                 onAddTap: () async {
                   final Task task = await _chooseTask(widget.possibleParents);
                   if (task != null) {
@@ -127,9 +132,12 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
                 maxItems: -1,
                 title: 'Sub tasks',
                 tasks: _subTasks,
-                addTask: widget.addTask,
-                removeTask: widget.removeTask,
-                updateTask: widget.updateTask,
+                onTap: (Task task) {
+
+                },
+                onDeleteTap: (Task task) {
+
+                },
                 onAddTap: () async {
                   final Task task = await _chooseTask(widget.possibleSubs);
                   if (task != null) {

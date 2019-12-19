@@ -1,6 +1,7 @@
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cupertino_date_picker/flutter_cupertino_date_picker.dart';
+import 'package:organizer/models/app_state_model.dart';
 
 import 'package:organizer/models/task_model.dart';
 
@@ -9,12 +10,16 @@ import 'package:organizer/widgets/task_list_adder.dart';
 
 class AddEditTaskScreen extends StatefulWidget {
   final Task task;
+  final TasksFinder possibleParents;
+  final TasksFinder possibleSubs;
   final TaskAdder addTask;
   final TaskRemover removeTask;
   final TaskUpdater updateTask;
 
   AddEditTaskScreen({
     @required this.addTask,
+    @required this.possibleParents,
+    @required this.possibleSubs,
     @required this.removeTask,
     @required this.updateTask,
     this.task,
@@ -33,6 +38,8 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
 
   final TextEditingController _targetDateTimeController =
       new TextEditingController();
+  Task _parentTask;
+  List<Task> _subTasks;
   DateTime _targetDateTime;
   String _name;
   String _text;

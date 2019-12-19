@@ -40,26 +40,6 @@ class AppState {
     };
   }
 
-  List<Task> possibleParentTasksFor(Task task) {
-    List<Task> possibleParents = [];
-    for (int i = 0; i < tasks.length; ++i) {
-      if (tasks[i].canBeParentTaskTo(task)) {
-        possibleParents.add(tasks[i]);
-      }
-    }
-    return possibleParents;
-  }
-
-  List<Task> possibleSubTasksFor(Task task) {
-    List<Task> possibleSubs = [];
-    for (int i = 0; i < tasks.length; ++i) {
-      if (tasks[i].canBeSubTaskTo(task)) {
-        possibleSubs.add(tasks[i]);
-      }
-    }
-    return possibleSubs;
-  }
-
   @override
   int get hashCode => tasks.hashCode ^ notes.hashCode ^ isLoading.hashCode;
 
@@ -77,3 +57,5 @@ class AppState {
     return 'AppState{isLoading: $isLoading, tasks: $tasks, notes: $notes}';
   }
 }
+
+typedef List<Task> TasksFinder(Task task);

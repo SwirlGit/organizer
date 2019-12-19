@@ -171,4 +171,24 @@ class OrganizerAppState extends State<OrganizerApp> {
     super.setState(fn);
     _save();
   }
+
+  List<Task> possibleParentTasksFor(Task task) {
+    List<Task> possibleParents = [];
+    for (int i = 0; i < appState.tasks.length; ++i) {
+      if (appState.tasks[i].canBeParentTaskTo(task)) {
+        possibleParents.add(appState.tasks[i]);
+      }
+    }
+    return possibleParents;
+  }
+
+  List<Task> possibleSubTasksFor(Task task) {
+    List<Task> possibleSubs = [];
+    for (int i = 0; i < appState.tasks.length; ++i) {
+      if (appState.tasks[i].canBeSubTaskTo(task)) {
+        possibleSubs.add(appState.tasks[i]);
+      }
+    }
+    return possibleSubs;
+  }
 }

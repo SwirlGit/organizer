@@ -8,6 +8,8 @@ import 'package:organizer/models/task_model.dart';
 import 'package:organizer/widgets/task_item.dart';
 import 'package:organizer/widgets/task_list_adder.dart';
 
+import 'package:organizer/screens/choose_task_screen.dart';
+
 class AddEditTaskScreen extends StatefulWidget {
   final Task task;
   final TasksFinder possibleParents;
@@ -109,10 +111,15 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
                 tasks: widget.task == null || widget.task.parentTask == null
                     ? []
                     : [widget.task.parentTask],
-                loading: false,
                 addTask: widget.addTask,
                 removeTask: widget.removeTask,
                 updateTask: widget.updateTask,
+                onAddTap: () async {
+                  final Task task = await _chooseTask(widget.possibleParents);
+                  if (task != null) {
+
+                  }
+                },
               ),
               TaskListAdder(
                 maxItems: -1,
@@ -120,10 +127,15 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
                 tasks: widget.task == null || widget.task.subTasks == null
                     ? []
                     : widget.task.subTasks,
-                loading: false,
                 addTask: widget.addTask,
                 removeTask: widget.removeTask,
                 updateTask: widget.updateTask,
+                onAddTap: () async {
+                  final Task task = await _chooseTask(widget.possibleSubs);
+                  if (task != null) {
+
+                  }
+                },
               ),
             ],
           ),
@@ -178,6 +190,16 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
       return DateFormat(DATETIME_FORMAT).format(_targetDateTime.toLocal());
     }
     return '';
+  }
+
+  Future<Task> _chooseTask(TasksFinder finder) async {
+    return await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => ChooseTaskScreen(
+          tasks: finder(widget.task),
+        ),
+      ),
+    );
   }
 
   bool get isEditing => widget.task != null;

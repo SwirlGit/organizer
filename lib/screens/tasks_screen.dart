@@ -7,12 +7,16 @@ import 'package:organizer/widgets/task_list.dart';
 class TasksScreen extends StatefulWidget {
   final AppState appState;
   final TaskAdder addTask;
+  final TasksFinder possibleParents;
+  final TasksFinder possibleSubs;
   final TaskRemover removeTask;
   final TaskUpdater updateTask;
 
   TasksScreen({
     @required this.appState,
     @required this.addTask,
+    @required this.possibleParents,
+    @required this.possibleSubs,
     @required this.removeTask,
     @required this.updateTask,
   });
@@ -29,8 +33,10 @@ class _TasksScreenState extends State<TasksScreen> {
       body: TaskList(
         tasks: widget.appState.tasks,
         loading: widget.appState.isLoading,
-        removeTask: widget.removeTask,
         addTask: widget.addTask,
+        possibleParents: widget.possibleParents,
+        possibleSubs: widget.possibleSubs,
+        removeTask: widget.removeTask,
         updateTask: widget.updateTask,
       ),
       floatingActionButton: FloatingActionButton(

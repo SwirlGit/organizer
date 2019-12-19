@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:organizer/models/app_state_model.dart';
+import 'package:organizer/screens/choose_task_screen.dart';
 
 import 'package:organizer/widgets/task_item.dart';
 import 'package:organizer/models/task_model.dart';
@@ -8,19 +10,19 @@ class TaskListAdder extends StatelessWidget {
   final int maxItems;
   final String title;
   final List<Task> tasks;
-  final bool loading;
   final TaskAdder addTask;
   final TaskRemover removeTask;
   final TaskUpdater updateTask;
+  final GestureTapCallback onAddTap;
 
   TaskListAdder({
     @required this.maxItems,
     @required this.title,
     @required this.tasks,
-    @required this.loading,
     @required this.addTask,
     @required this.removeTask,
     @required this.updateTask,
+    @required this.onAddTap,
   });
 
   @override
@@ -38,9 +40,7 @@ class TaskListAdder extends StatelessWidget {
                   ? Container()
                   : IconButton(
                       icon: Icon(Icons.add, color: Colors.white),
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/tasks/chooseTask');
-                      },
+                      onPressed: onAddTap,
                     ),
             ],
           ),

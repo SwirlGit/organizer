@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 
 import 'package:organizer/widgets/task_item.dart';
 import 'package:organizer/models/task_model.dart';
+import 'package:organizer/models/app_state_model.dart';
 import 'package:organizer/screens/add_edit_task_screen.dart';
 
 class TaskList extends StatelessWidget {
   final List<Task> tasks;
   final bool loading;
   final TaskAdder addTask;
+  final TasksFinder possibleParents;
+  final TasksFinder possibleSubs;
   final TaskRemover removeTask;
   final TaskUpdater updateTask;
 
@@ -15,6 +18,8 @@ class TaskList extends StatelessWidget {
     @required this.tasks,
     @required this.loading,
     @required this.addTask,
+    @required this.possibleParents,
+    @required this.possibleSubs,
     @required this.removeTask,
     @required this.updateTask,
   });
@@ -40,6 +45,8 @@ class TaskList extends StatelessWidget {
                       MaterialPageRoute(
                         builder: (context) => AddEditTaskScreen(
                           addTask: addTask,
+                          possibleParents: possibleParents,
+                          possibleSubs: possibleSubs,
                           updateTask: updateTask,
                           task: task,
                         ),

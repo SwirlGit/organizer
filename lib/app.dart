@@ -47,6 +47,8 @@ class OrganizerAppState extends State<OrganizerApp> {
             appState: appState,
             updateTask: updateTask,
             addTask: addTask,
+            possibleParents: possibleParentTasksFor,
+            possibleSubs: possibleSubTasksFor,
             removeTask: removeTask,
           ),
           NotesScreen(

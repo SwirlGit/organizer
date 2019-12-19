@@ -48,6 +48,8 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
 
   @override
   void initState() {
+    _parentTask = widget.task != null ? widget.task.parentTask : null;
+    _subTasks = widget.task != null ? widget.task.subTasks : [];
     _targetDateTime =
         widget.task != null ? widget.task.dateInformation.targetDate : null;
     _targetDateTimeController.text = _currentTargetDateTimeString();
@@ -108,32 +110,32 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
               TaskListAdder(
                 maxItems: 1,
                 title: 'Parent task',
-                tasks: widget.task == null || widget.task.parentTask == null
-                    ? []
-                    : [widget.task.parentTask],
+                tasks: _parentTask != null ? [_parentTask] : [],
                 addTask: widget.addTask,
                 removeTask: widget.removeTask,
                 updateTask: widget.updateTask,
                 onAddTap: () async {
                   final Task task = await _chooseTask(widget.possibleParents);
                   if (task != null) {
-
+                    setState(() {
+                      _parentTask = task;
+                    });
                   }
                 },
               ),
               TaskListAdder(
                 maxItems: -1,
                 title: 'Sub tasks',
-                tasks: widget.task == null || widget.task.subTasks == null
-                    ? []
-                    : widget.task.subTasks,
+                tasks: _subTasks,
                 addTask: widget.addTask,
                 removeTask: widget.removeTask,
                 updateTask: widget.updateTask,
                 onAddTap: () async {
                   final Task task = await _chooseTask(widget.possibleSubs);
                   if (task != null) {
-
+                    setState(() {
+                      _subTasks.add(task);
+                    });
                   }
                 },
               ),
@@ -149,16 +151,24 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
             if (form.validate()) {
               form.save();
 
+              final parentTask = _parentTask;
+              final subTasks = _subTasks;
               final targetDateTime = _targetDateTime.toUtc();
               final name = _name;
               final text = _text;
 
               if (isEditing) {
                 widget.updateTask(widget.task,
-                    name: name, targetDate: targetDateTime, text: text);
+                    name: name,
+                    parentTask: parentTask,
+                    subTasks: subTasks,
+                    targetDate: targetDateTime,
+                    text: text);
               } else {
                 widget.addTask(Task(
                   name,
+                  parentTask: parentTask,
+                  subTasks: subTasks,
                   targetDate: targetDateTime,
                   text: text,
                 ));

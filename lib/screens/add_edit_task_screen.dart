@@ -131,7 +131,13 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
                 title: 'Sub tasks',
                 tasks: _subTasks,
                 onTap: _closeCurrentAndOpenNew,
-                onDeleteTap: (Task task) {},
+                onDeleteTap: (Task task) {
+                  if (task != null) {
+                    setState(() {
+                      _subTasks.remove(task);
+                    });
+                  }
+                },
                 onAddTap: () async {
                   final Task task = await _chooseTask(widget.possibleSubs);
                   if (task != null) {

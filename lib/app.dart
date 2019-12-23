@@ -136,12 +136,24 @@ class OrganizerAppState extends State<OrganizerApp> {
 
   void addTask(Task task) {
     setState(() {
+      if (task.parentTask != null) {
+        task.parentTask.subTasks.add(task);
+      }
+      for (Task subTask in task.subTasks) {
+        subTask.parentTask = task;
+      }
       appState.tasks.add(task);
     });
   }
 
   void removeTask(Task task) {
     setState(() {
+      if (task.parentTask != null) {
+        task.parentTask.subTasks.remove(task);
+      }
+      for (Task subTask in task.subTasks) {
+        subTask.parentTask = null;
+      }
       appState.tasks.remove(task);
     });
   }
@@ -162,9 +174,27 @@ class OrganizerAppState extends State<OrganizerApp> {
           targetDate ?? task.dateInformation.targetDate;
       task.name = name ?? task.name;
       task.text = text ?? task.text;
-      task.parentTask = parentTask ?? task.parentTask;
-      task.subTasks = subTasks ?? task.subTasks;
       task.done = done ?? task.done;
+
+      if (parentTask != task.parentTask) {
+        if (task.parentTask != null) {
+          task.parentTask.subTasks.remove(task);
+        }
+        if (parentTask != null) {
+          parentTask.subTasks.add(task);
+        }
+        task.parentTask = parentTask;
+      }
+
+      if ((subTasks != null) && (subTasks != task.subTasks)) {
+        for (Task subTask in task.subTasks) {
+          subTask.parentTask = null;
+        }
+        for (Task subTask in subTasks) {
+          subTask.parentTask = task;
+        }
+        task.subTasks = subTasks;
+      }
     });
   }
 

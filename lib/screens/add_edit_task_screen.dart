@@ -49,7 +49,7 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
   @override
   void initState() {
     _parentTask = widget.task != null ? widget.task.parentTask : null;
-    _subTasks = widget.task != null ? widget.task.subTasks : [];
+    _subTasks = widget.task != null ? List.from(widget.task.subTasks) : [];
     _targetDateTime =
         widget.task != null ? widget.task.dateInformation.targetDate : null;
     _targetDateTimeController.text = _currentTargetDateTimeString();

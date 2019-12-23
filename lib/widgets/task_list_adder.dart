@@ -29,7 +29,7 @@ class TaskListAdder extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(10.0)),
       ),
-      child: Stack(
+      child: Column(
         children: <Widget>[
           Row(
             children: <Widget>[

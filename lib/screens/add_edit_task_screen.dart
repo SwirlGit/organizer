@@ -36,7 +36,7 @@ const String MAX_DATETIME = '2100-12-31 23:59:59';
 const String DATETIME_FORMAT = 'yyyy-MM-dd HH:mm:ss';
 
 class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
-  static final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   final TextEditingController _targetDateTimeController =
       new TextEditingController();
@@ -113,7 +113,19 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
                   maxItems: 1,
                   title: 'Parent task',
                   tasks: _parentTask != null ? [_parentTask] : [],
-                  onTap: _closeCurrentAndOpenNew,
+                  onTap: (Task task) {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => AddEditTaskScreen(
+                          addTask: widget.addTask,
+                          possibleParents: widget.possibleParents,
+                          possibleSubs: widget.possibleSubs,
+                          updateTask: widget.updateTask,
+                          task: task,
+                        ),
+                      ),
+                    );
+                  },
                   onDeleteTap: (Task task) {
                     setState(() {
                       _parentTask = null;
@@ -132,7 +144,19 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
                   maxItems: -1,
                   title: 'Sub tasks',
                   tasks: _subTasks,
-                  onTap: _closeCurrentAndOpenNew,
+                  onTap: (Task task) {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => AddEditTaskScreen(
+                          addTask: widget.addTask,
+                          possibleParents: widget.possibleParents,
+                          possibleSubs: widget.possibleSubs,
+                          updateTask: widget.updateTask,
+                          task: task,
+                        ),
+                      ),
+                    );
+                  },
                   onDeleteTap: (Task task) {
                     if (task != null) {
                       setState(() {

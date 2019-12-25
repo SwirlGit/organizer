@@ -60,94 +60,97 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(isEditing ? 'edit task' : 'add task')),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Form(
-          key: formKey,
-          autovalidate: false,
-          onWillPop: () {
-            return Future(() => true);
-          },
-          child: ListView(
-            children: [
-              TextFormField(
-                initialValue: widget.task != null ? widget.task.name : '',
-                style: Theme.of(context).textTheme.headline,
-                decoration: InputDecoration(
-                  hintText: 'Task title',
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Form(
+            key: formKey,
+            autovalidate: false,
+            onWillPop: () {
+              return Future(() => true);
+            },
+            child: Column(
+              children: [
+                TextFormField(
+                  initialValue: widget.task != null ? widget.task.name : '',
+                  style: Theme.of(context).textTheme.headline,
+                  decoration: InputDecoration(
+                    hintText: 'Task title',
+                  ),
+                  validator: (val) =>
+                      val.trim().isEmpty ? 'Please enter task title' : null,
+                  onSaved: (value) => _name = value,
                 ),
-                validator: (val) =>
-                    val.trim().isEmpty ? 'Please enter task title' : null,
-                onSaved: (value) => _name = value,
-              ),
-              TextFormField(
-                controller: _targetDateTimeController,
-                style: Theme.of(context).textTheme.headline,
-                decoration: InputDecoration(
-                  hintText: 'Target date',
+                TextFormField(
+                  controller: _targetDateTimeController,
+                  style: Theme.of(context).textTheme.headline,
+                  decoration: InputDecoration(
+                    hintText: 'Target date',
+                  ),
+                  validator: (val) {
+                    try {
+                      DateTime.parse(val);
+                      return null;
+                    } catch (e) {
+                      return 'Please choose target date time';
+                    }
+                  },
+                  onTap: () {
+                    _showDateTimePicker();
+                  },
                 ),
-                validator: (val) {
-                  try {
-                    DateTime.parse(val);
-                    return null;
-                  } catch (e) {
-                    return 'Please choose target date time';
-                  }
-                },
-                onTap: () {
-                  _showDateTimePicker();
-                },
-              ),
-              TextFormField(
-                initialValue: widget.task != null ? widget.task.text : '',
-                maxLines: 10,
-                style: Theme.of(context).textTheme.subhead,
-                decoration: InputDecoration(
-                  hintText: 'Task text',
+                TextFormField(
+                  initialValue: widget.task != null ? widget.task.text : '',
+                  maxLines: 10,
+                  style: Theme.of(context).textTheme.subhead,
+                  decoration: InputDecoration(
+                    hintText: 'Task text',
+                  ),
+                  onSaved: (value) => _text = value,
                 ),
-                onSaved: (value) => _text = value,
-              ),
-              TaskListAdder(
-                maxItems: 1,
-                title: 'Parent task',
-                tasks: _parentTask != null ? [_parentTask] : [],
-                onTap: _closeCurrentAndOpenNew,
-                onDeleteTap: (Task task) {
-                  setState(() {
-                    _parentTask = null;
-                  });
-                },
-                onAddTap: () async {
-                  final Task task = await _chooseTask(widget.possibleParents);
-                  if (task != null) {
+                TaskListAdder(
+                  maxItems: 1,
+                  title: 'Parent task',
+                  tasks: _parentTask != null ? [_parentTask] : [],
+                  onTap: _closeCurrentAndOpenNew,
+                  onDeleteTap: (Task task) {
                     setState(() {
-                      _parentTask = task;
+                      _parentTask = null;
                     });
-                  }
-                },
-              ),
-              TaskListAdder(
-                maxItems: -1,
-                title: 'Sub tasks',
-                tasks: _subTasks,
-                onTap: _closeCurrentAndOpenNew,
-                onDeleteTap: (Task task) {
-                  if (task != null) {
-                    setState(() {
-                      _subTasks.remove(task);
-                    });
-                  }
-                },
-                onAddTap: () async {
-                  final Task task = await _chooseTask(widget.possibleSubs);
-                  if (task != null) {
-                    setState(() {
-                      _subTasks.add(task);
-                    });
-                  }
-                },
-              ),
-            ],
+                  },
+                  onAddTap: () async {
+                    final Task task = await _chooseTask(widget.possibleParents);
+                    if (task != null) {
+                      setState(() {
+                        _parentTask = task;
+                      });
+                    }
+                  },
+                ),
+                TaskListAdder(
+                  maxItems: -1,
+                  title: 'Sub tasks',
+                  tasks: _subTasks,
+                  onTap: _closeCurrentAndOpenNew,
+                  onDeleteTap: (Task task) {
+                    if (task != null) {
+                      setState(() {
+                        _subTasks.remove(task);
+                      });
+                    }
+                  },
+                  onAddTap: () async {
+                    final Task task = await _chooseTask(widget.possibleSubs);
+                    if (task != null) {
+                      setState(() {
+                        _subTasks.add(task);
+                      });
+                    }
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),
